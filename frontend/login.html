@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MemeManoranjan</title>
+    <meta name="description" content="Log in to MemeManoranjan.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 100px);
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body class="graffiti-theme">
+    <div class="background-decor">
+        <div class="bg-text bg-text-1">FAMOUS</div>
+        <div class="bg-text bg-text-2">GRAFFITI</div>
+        <div class="sticker sticker-1"><i class="fas fa-star"></i></div>
+        <div class="sticker sticker-2"><i class="fas fa-smile"></i></div>
+        <div class="sticker sticker-3"><i class="fas fa-bolt"></i></div>
+    </div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-spray-can"></i>
+                    <span>Meme<span>Manoranjan</span></span>
+                </a>
+            </div>
+            <div class="nav-actions">
+                <a href="index.html" class="nav-tab" style="text-decoration:none;">Home</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container auth-container">
+        <form class="form" id="login-form">
+            <h2 style="margin-bottom: 20px; text-align: center; font-family: 'Bangers', cursive; font-size: 2.5rem; letter-spacing: 1px;">Log In</h2>
+            
+            <div id="error-message" style="color: #ff4d4d; background: rgba(255, 77, 77, 0.1); padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; text-align: center; font-weight: 600;"></div>
+
+            <div class="flex-column">
+                <label>Email</label>
+            </div>
+            <div class="inputForm">
+                <i class="fas fa-envelope" style="color:#aaa;"></i>
+                <input type="email" id="email" class="input" placeholder="Enter your Email" required>
+            </div>
+            
+            <div class="flex-column">
+                <label>Password</label>
+            </div>
+            <div class="inputForm">
+                <i class="fas fa-lock" style="color:#aaa;"></i>
+                <input type="password" class="input" id="login-password" placeholder="Enter your Password" required>
+                <i class="fas fa-eye eye-icon" id="toggle-password" style="color:#aaa; cursor:pointer; margin-left: 10px;" title="Show Password"></i>
+            </div>
+            
+            <div class="flex-row">
+                <div>
+                    <input type="checkbox" id="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <span class="span">Forgot password?</span>
+            </div>
+            
+            <button type="submit" class="button-submit">Log In</button>
+            
+            <p class="p">Don't have an account? <a href="signup.html" class="span">Sign Up</a></p>
+            
+            <p class="p" style="margin: 10px 0;">Or With</p>
+            <button type="button" class="btn" id="google-login-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" width="20" height="20">
+                Google
+            </button>
+        </form>
+    </main>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        const API_URL = 'http://127.0.0.1:5000/api/auth';
+        const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE.apps.googleusercontent.com'; // Replace with actual Client ID
+        const loginForm = document.getElementById('login-form');
+        const errorDiv = document.getElementById('error-message');
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('login-password');
+        
+        if(togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function () {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                this.className = isPassword ? 'fas fa-eye-slash eye-icon' : 'fas fa-eye eye-icon';
+                this.style.color = isPassword ? 'white' : '#aaa';
+            });
+        }
+
+        // Initialize Google Sign-In
+        window.onload = function () {
+            if (typeof google !== 'undefined') {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleResponse
+                });
+                
+                const googleBtn = document.getElementById('google-login-btn');
+                if (googleBtn) {
+                    googleBtn.onclick = () => {
+                        google.accounts.id.prompt(); 
+                    };
+                }
+            }
+        };
+
+        async function handleGoogleResponse(response) {
+            errorDiv.style.display = 'none';
+            try {
+                const res = await fetch(`${API_URL}/google`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: response.credential })
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'index.html';
+                } else {
+                    errorDiv.textContent = data.error || 'Google login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (err) {
+                console.error('❌ Google Auth Connection Error:', err);
+                errorDiv.textContent = 'Backend Connection Error. Make sure the Flask server is running on port 5000.';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            errorDiv.style.display = 'none';
+            const email = document.getElementById('email').value;
+            const password = passwordInput.value;
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    window.location.href = 'index.html';
+                } else {
+                    errorDiv.textContent = data.error || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (err) {
+                console.error('❌ Login Connection Error:', err);
+                errorDiv.textContent = 'Backend Connection Error. Make sure the Flask server is running on port 5000.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+
+</html>
