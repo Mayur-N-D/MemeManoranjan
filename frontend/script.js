@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const GEMINI_API_KEY = 'AIzaSyCV0Qj_qq-dNPKoEhkNJ-Lxs3scpAxU_fQ';
     const captionCache = new Map();
-    const API_BASE_URL = 'http://127.0.0.1:5000/api';
+    const API_BASE_URL = 'https://mememanoranjan-backend.onrender.com/api';
 
     // Initialize
     init();
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function checkBackendConnection() {
         try {
-            const response = await fetch(`${API_BASE_URL}/`);
+            const response = await fetch('https://mememanoranjan-backend.onrender.com/');
             if (response.ok) {
                 console.log('✅ Connected to Flask Backend');
             }
