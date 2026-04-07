@@ -29,6 +29,7 @@ Built using Flask (backend) and Netlify (frontend) with MongoDB Atlas for data s
   
 🔹 Database
 - MongoDB Atlas
+  
 🔹 Authentication
 - JWT (JSON Web Tokens)
 - Google OAuth
@@ -40,8 +41,8 @@ Built using Flask (backend) and Netlify (frontend) with MongoDB Atlas for data s
 ---
 
 ## 🚀 Live Demo 
-🔗 Frontend: https://mememanoranjan.netlify.app
-🔗 Backend: https://mememanoranjan-backend.onrender.com
+- 🔗 Frontend: https://mememanoranjan.netlify.app
+- 🔗 Backend: https://mememanoranjan-backend.onrender.com
 
 ---
 
