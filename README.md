@@ -17,6 +17,12 @@ Built using Flask (backend) and Netlify (frontend) with MongoDB Atlas for data s
 
 ---
 
+## 🚀 Live Demo 
+- 🔗 Frontend: https://mememanoranjan.netlify.app
+- 🔗 Backend: https://mememanoranjan-backend.onrender.com
+
+---
+
 ## 🛠️ Tech Stack
 🔹 Frontend
 - HTML, CSS, JavaScript
@@ -37,12 +43,6 @@ Built using Flask (backend) and Netlify (frontend) with MongoDB Atlas for data s
 🔹 APIs
 - Imgflip API (memes)
 - Google Gemini API (AI captions)
-
----
-
-## 🚀 Live Demo 
-- 🔗 Frontend: https://mememanoranjan.netlify.app
-- 🔗 Backend: https://mememanoranjan-backend.onrender.com
 
 ---
 
