@@ -72,23 +72,23 @@ Built using Flask (backend) and Netlify (frontend) with MongoDB Atlas for data s
 
 ## 📁 Project Structure
 
-- MemeManoranjan/
-- │
-- ├── backend/
-- │   ├── app.py
-- │   ├── routes/
-- │   │   └── auth.py
-- │   ├── models/
-- │   └── requirements.txt
-- │
-- ├── frontend/
-- │   ├── index.html
-- │   ├── login.html
-- │   ├── signup.html
-- │   ├── script.js
-- │   ├── style.css
-- │
-- └── README.md
+    MemeManoranjan/
+    │
+    ├── backend/
+    │   ├── app.py
+    │   ├── routes/
+    │   │   └── auth.py
+    │   ├── models/
+    │   └── requirements.txt
+    │
+    ├── frontend/
+    │   ├── index.html
+    │   ├── login.html
+    │   ├── signup.html
+    │   ├── script.js
+    │   ├── style.css
+    │
+    └── README.md
 
 ---
 
